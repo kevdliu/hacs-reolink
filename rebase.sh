@@ -72,6 +72,8 @@ divider
 git push -f "$HASS_REMOTE_FORK" "$HASS_BRANCH_NAME"
 ok "Pushed latest changes to remote (${HASS_REMOTE_FORK})"
 
+divider
+
 cd - > /dev/null
 rm -rf "./${HACS_COMPONENT_PATH}/${COMPONENT_NAME}"
 cp -rf "../${HASS_REPO_DIR}/${HASS_COMPONENT_PATH}/${COMPONENT_NAME}" "./${HACS_COMPONENT_PATH}"
@@ -88,6 +90,8 @@ divider
 echo "$status"
 changes=$(echo "$status" | wc -l)
 ok "${changes} files have changed in ${COMPONENT_NAME}"
+
+divider
 
 git add -A
 git commit -m "Rebased to ${tag}"
