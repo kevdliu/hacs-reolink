@@ -1,56 +1,138 @@
 """Config flow for the Reolink camera component."""
 from __future__ import annotations
 
+import asyncio
 from collections.abc import Mapping
 import logging
 from typing import Any
 
+from aiohttp import ClientResponseError, InvalidURL
+from aiohttp.web import Request
+import async_timeout
 from reolink_aio.exceptions import ApiError, CredentialsInvalidError, ReolinkError
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.components import dhcp
+from homeassistant.components import dhcp, webhook
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_PORT, CONF_USERNAME
-from homeassistant.core import callback
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import format_mac
 
-from .const import CONF_PROTOCOL, CONF_USE_HTTPS, DOMAIN
+from .const import (
+    CONF_ONVIF_EVENTS_REVERSE_PROXY,
+    CONF_PROTOCOL,
+    CONF_USE_HTTPS,
+    DOMAIN,
+)
 from .exceptions import ReolinkException, UserNotAdmin
 from .host import ReolinkHost
 
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_PROTOCOL = "rtsp"
-DEFAULT_OPTIONS = {CONF_PROTOCOL: DEFAULT_PROTOCOL}
+DEFAULT_ONVIF_EVENTS_REVERSE_PROXY = ""
+DEFAULT_OPTIONS = {
+    CONF_PROTOCOL: DEFAULT_PROTOCOL,
+    CONF_ONVIF_EVENTS_REVERSE_PROXY: DEFAULT_ONVIF_EVENTS_REVERSE_PROXY,
+}
+
+WEBHOOK_REACHABILITY_TEST_TIMEOUT = 10
 
 
 class ReolinkOptionsFlowHandler(config_entries.OptionsFlow):
     """Handle Reolink options."""
 
-    def __init__(self, config_entry):
+    def __init__(self, config_entry) -> None:
         """Initialize ReolinkOptionsFlowHandler."""
-        self.config_entry = config_entry
+        self.config_options = config_entry.options
+        self.protocol = self.config_options[CONF_PROTOCOL]
+        self.webhook_reverse_proxy = self.config_options.get(
+            CONF_ONVIF_EVENTS_REVERSE_PROXY
+        )
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Manage the Reolink options."""
+        errors = {}
+        placeholders = {}
         if user_input is not None:
-            return self.async_create_entry(data=user_input)
+            reverse_proxy = user_input.get(CONF_ONVIF_EVENTS_REVERSE_PROXY)
+            # Only perform the webhook test if a new reverse proxy is configured
+            if reverse_proxy and reverse_proxy != self.config_options.get(
+                CONF_ONVIF_EVENTS_REVERSE_PROXY
+            ):
+                try:
+                    webhook_reachable = await self.check_webhook_reachability(
+                        reverse_proxy
+                    )
+                    if not webhook_reachable:
+                        errors[
+                            CONF_ONVIF_EVENTS_REVERSE_PROXY
+                        ] = "webhook_test_unreachable"
+                except asyncio.TimeoutError:
+                    errors[CONF_ONVIF_EVENTS_REVERSE_PROXY] = "webhook_test_timeout"
+                except InvalidURL:
+                    errors[CONF_ONVIF_EVENTS_REVERSE_PROXY] = "webhook_test_invalid_url"
+                except ClientResponseError as err:
+                    errors[
+                        CONF_ONVIF_EVENTS_REVERSE_PROXY
+                    ] = "webhook_test_error_response"
+                    placeholders["response_code"] = str(err.status)
+
+            if not errors:
+                return self.async_create_entry(data=user_input)
+
+            self.protocol = user_input[CONF_PROTOCOL]
+            self.webhook_reverse_proxy = reverse_proxy
 
         return self.async_show_form(
             step_id="init",
             data_schema=vol.Schema(
                 {
-                    vol.Required(
-                        CONF_PROTOCOL,
-                        default=self.config_entry.options[CONF_PROTOCOL],
-                    ): vol.In(["rtsp", "rtmp", "flv"]),
+                    vol.Required(CONF_PROTOCOL, default=self.protocol): vol.In(
+                        ["rtsp", "rtmp", "flv"]
+                    ),
+                    vol.Optional(
+                        CONF_ONVIF_EVENTS_REVERSE_PROXY,
+                        description={"suggested_value": self.webhook_reverse_proxy},
+                    ): str,
                 }
             ),
+            errors=errors,
+            description_placeholders=placeholders,
         )
+
+    async def check_webhook_reachability(self, proxy_addr: str) -> bool:
+        """Test whether the webhook is reachable via the reverse proxy."""
+        webhook_id = webhook.async_generate_id()
+        webhook_reachable = False
+
+        async def handle_webhook(
+            hass: HomeAssistant, webhook_id: str, request: Request
+        ) -> None:
+            data = await request.text()
+            if webhook_id == data:
+                nonlocal webhook_reachable
+                webhook_reachable = True
+
+        webhook.async_register(
+            self.hass, DOMAIN, "Reolink Webhook Test", webhook_id, handle_webhook
+        )
+
+        path = webhook.async_generate_path(webhook_id)
+        url = f"{proxy_addr}{path}"
+        try:
+            async with async_timeout.timeout(WEBHOOK_REACHABILITY_TEST_TIMEOUT):
+                await async_get_clientsession(self.hass).post(
+                    url, data=webhook_id, raise_for_status=True
+                )
+                return webhook_reachable
+        finally:
+            webhook.async_unregister(self.hass, webhook_id)
 
 
 class ReolinkFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):

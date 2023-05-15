@@ -14,20 +14,23 @@ from reolink_aio.exceptions import ReolinkError, SubscriptionError
 
 from homeassistant.components import webhook
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_PORT, CONF_USERNAME
-from homeassistant.core import CALLBACK_TYPE, HassJob, HomeAssistant
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers.device_registry import format_mac
 from homeassistant.helpers.dispatcher import async_dispatcher_send
-from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.network import NoURLAvailableError, get_url
 
-from .const import CONF_PROTOCOL, CONF_USE_HTTPS, DOMAIN
+from .const import (
+    CONF_ONVIF_EVENTS_REVERSE_PROXY,
+    CONF_PROTOCOL,
+    CONF_USE_HTTPS,
+    DOMAIN,
+)
 from .exceptions import ReolinkSetupException, ReolinkWebhookException, UserNotAdmin
 
 DEFAULT_TIMEOUT = 60
 FIRST_ONVIF_TIMEOUT = 15
 SUBSCRIPTION_RENEW_THRESHOLD = 300
-POLL_INTERVAL_NO_PUSH = 5
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -60,9 +63,8 @@ class ReolinkHost:
         self.webhook_id: str | None = None
         self._base_url: str = ""
         self._webhook_url: str = ""
+        self._webhook_reverse_proxy = options.get(CONF_ONVIF_EVENTS_REVERSE_PROXY)
         self._webhook_reachable: asyncio.Event = asyncio.Event()
-        self._cancel_poll: CALLBACK_TYPE | None = None
-        self._poll_job = HassJob(self._async_poll_all_motion, cancel_on_shutdown=True)
         self._lost_subscription: bool = False
 
     @property
@@ -173,7 +175,6 @@ class ReolinkHost:
                     "network_link": "https://my.home-assistant.io/redirect/network/",
                 },
             )
-            await self._async_poll_all_motion()
         else:
             ir.async_delete_issue(self._hass, DOMAIN, "webhook_url")
 
@@ -233,9 +234,6 @@ class ReolinkHost:
 
     async def stop(self, event=None):
         """Disconnect the API."""
-        if self._cancel_poll is not None:
-            self._cancel_poll()
-            self._cancel_poll = None
         self.unregister_webhook()
         await self.disconnect()
 
@@ -319,6 +317,23 @@ class ReolinkHost:
             self._api.host,
         )
 
+    def _get_webhook_base_url(self, event_id: str) -> str:
+        """Return the URL of the webhook reverse proxy if configured. Otherwise return the Home Assistant instance URL."""
+        if self._webhook_reverse_proxy:
+            return self._webhook_reverse_proxy
+
+        try:
+            return get_url(self._hass, prefer_external=False)
+        except NoURLAvailableError:
+            try:
+                return get_url(self._hass, prefer_external=True)
+            except NoURLAvailableError as err:
+                self.unregister_webhook()
+                raise ReolinkWebhookException(
+                    f"Error registering URL for webhook {event_id}: "
+                    "HomeAssistant URL is not available"
+                ) from err
+
     def register_webhook(self) -> None:
         """Register the webhook for motion events."""
         self.webhook_id = f"{DOMAIN}_{self.unique_id.replace(':', '')}_ONVIF"
@@ -328,18 +343,7 @@ class ReolinkHost:
             self._hass, DOMAIN, event_id, event_id, self.handle_webhook
         )
 
-        try:
-            self._base_url = get_url(self._hass, prefer_external=False)
-        except NoURLAvailableError:
-            try:
-                self._base_url = get_url(self._hass, prefer_external=True)
-            except NoURLAvailableError as err:
-                self.unregister_webhook()
-                raise ReolinkWebhookException(
-                    f"Error registering URL for webhook {event_id}: "
-                    "HomeAssistant URL is not available"
-                ) from err
-
+        self._base_url = self._get_webhook_base_url(event_id)
         webhook_path = webhook.async_generate_path(event_id)
         self._webhook_url = f"{self._base_url}{webhook_path}"
 
@@ -366,43 +370,6 @@ class ReolinkHost:
         _LOGGER.debug("Unregistering webhook %s", self.webhook_id)
         webhook.async_unregister(self._hass, self.webhook_id)
         self.webhook_id = None
-
-    async def _async_poll_all_motion(self, *_) -> None:
-        """Poll motion and AI states until the first ONVIF push is received."""
-        if self._webhook_reachable.is_set():
-            # ONVIF push is working, stop polling
-            self._cancel_poll = None
-            return
-
-        try:
-            await self._api.get_motion_state_all_ch()
-        except (
-            aiohttp.ClientConnectorError,
-            ReolinkError,
-        ) as err:
-            _LOGGER.error(
-                "Reolink error while polling motion state for host %s:%s: %s",
-                self._api.host,
-                self._api.port,
-                str(err),
-            )
-        except asyncio.TimeoutError:
-            _LOGGER.error(
-                "Reolink timeout error while polling motion state for host %s:%s",
-                self._api.host,
-                self._api.port,
-            )
-        finally:
-            # schedule next poll
-            if not self._hass.is_stopping:
-                self._cancel_poll = async_call_later(
-                    self._hass, POLL_INTERVAL_NO_PUSH, self._poll_job
-                )
-
-        # After receiving the new motion states in the upstream lib,
-        # update the binary sensors with async_write_ha_state
-        # The same dispatch as for the webhook can be used
-        async_dispatcher_send(self._hass, f"{self.webhook_id}_all", {})
 
     async def handle_webhook(
         self, hass: HomeAssistant, webhook_id: str, request: Request
