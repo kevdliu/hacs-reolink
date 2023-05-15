@@ -93,8 +93,11 @@ ok "${changes} files have changed in ${COMPONENT_NAME}"
 
 divider
 
+echo "# Reolink" > info.md
+echo "Latest version is based on Home Assistant ${tag}" >> info.md
+
 git add -A
-git commit -m "Rebased to ${tag}"
+git commit -m "Rebase to ${tag}"
 ok "Committed changes to local repository"
 
 divider
