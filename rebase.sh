@@ -14,13 +14,14 @@ HACS_BRANCH_NAME="master"
 HACS_COMPONENT_PATH="custom_components/"
 
 # Colors
-RED="\033[31m"
-GREEN="\033[32m"
-CYAN="\033[36m"
-NORMAL="\033[0;39m"
+if [[ $* != *"--no-color"* ]]; then
+    RED="\033[31m"
+    GREEN="\033[32m"
+    CYAN="\033[36m"
+    NORMAL="\033[0;39m"
+fi
 
 # Utility
-
 ok () {
     echo -e "${CYAN}----------------------------------"
     echo -e "${GREEN}$1"
