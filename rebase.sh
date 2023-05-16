@@ -75,6 +75,9 @@ ok "Pushed latest changes to remote (${HASS_REMOTE_FORK})"
 divider
 
 cd - > /dev/null
+
+git pull origin "$HACS_BRANCH_NAME"
+
 rm -rf "./${HACS_COMPONENT_PATH}/${COMPONENT_NAME}"
 cp -rf "../${HASS_REPO_DIR}/${HASS_COMPONENT_PATH}/${COMPONENT_NAME}" "./${HACS_COMPONENT_PATH}"
 ok "Copied latest changes to HACS repo"
