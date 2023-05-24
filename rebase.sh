@@ -96,6 +96,12 @@ ok "Copied latest changes to HACS repo"
 
 divider
 
+mkdir "${HACS_COMPONENT_PATH}/${COMPONENT_NAME}/translations"
+cp -f "${HACS_COMPONENT_PATH}/${COMPONENT_NAME}/strings.json" "${HACS_COMPONENT_PATH}/${COMPONENT_NAME}/translations/en.json"
+ok "Copied translations file"
+
+divider
+
 status=$(git status --porcelain)
 if [ -n "$status" ]; then
     echo "$status"
