@@ -13,6 +13,13 @@ HASS_REMOTE_FORK="fork"
 HACS_BRANCH_NAME="master"
 HACS_COMPONENT_PATH="custom_components/"
 
+# Configuration
+if [[ $* == *"--force-update"* ]]; then
+    force_update=true
+else
+    force_update=false
+fi
+
 # Colors
 if [[ $* != *"--no-color"* ]]; then
     RED="\033[31m"
@@ -59,8 +66,12 @@ ok "Latest Home Assistant release tag is ${tag}"
 rebase=$(git rebase "$tag" "$HASS_BRANCH_NAME")
 
 if [[ "$rebase" == *"up to date"* ]]; then
-  ok "HACS is up to date"
-  exit 0
+    if [ "$force_update" = true ]; then
+        ok "HACS is up to date but force update is enabled. Continuing."
+    else
+        ok "HACS is up to date"
+        exit 0
+    fi
 fi
 
 divider 
@@ -83,26 +94,30 @@ rm -rf "./${HACS_COMPONENT_PATH}/${COMPONENT_NAME}"
 cp -rf "../${HASS_REPO_DIR}/${HASS_COMPONENT_PATH}/${COMPONENT_NAME}" "./${HACS_COMPONENT_PATH}"
 ok "Copied latest changes to HACS repo"
 
+divider
+
 status=$(git status --porcelain)
-if [ -z "$status" ]; then
-    ok "No changes detected for ${COMPONENT_NAME}"
-    exit 0
+if [ -n "$status" ]; then
+    echo "$status"
+    changes=$(echo "$status" | wc -l)
+    ok "${changes} files have changed in ${COMPONENT_NAME}"
+
+    divider
+
+    echo "# Reolink" > info.md
+    echo "Latest version is based on Home Assistant ${tag}" >> info.md
+
+    git add -A
+    git commit -m "Rebase to ${tag}"
+    ok "Committed changes to local repository"
+else
+    if [ "$force_update" = true ]; then
+        ok "No changes detected for ${COMPONENT_NAME} but force update is enabled. Continuing."
+    else
+        ok "No changes detected for ${COMPONENT_NAME}"
+        exit 0
+    fi
 fi
-
-divider
-
-echo "$status"
-changes=$(echo "$status" | wc -l)
-ok "${changes} files have changed in ${COMPONENT_NAME}"
-
-divider
-
-echo "# Reolink" > info.md
-echo "Latest version is based on Home Assistant ${tag}" >> info.md
-
-git add -A
-git commit -m "Rebase to ${tag}"
-ok "Committed changes to local repository"
 
 divider
 
