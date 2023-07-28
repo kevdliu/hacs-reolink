@@ -21,13 +21,18 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import format_mac
 
+<<<<<<< HEAD
+from .const import CONF_PROTOCOL, CONF_USE_HTTPS, DOMAIN
+from .exceptions import ReolinkException, ReolinkWebhookException, UserNotAdmin
+=======
 from .const import (
     CONF_ONVIF_EVENTS_REVERSE_PROXY,
     CONF_PROTOCOL,
     CONF_USE_HTTPS,
     DOMAIN,
 )
-from .exceptions import ReolinkException, UserNotAdmin
+from .exceptions import ReolinkException, ReolinkWebhookException, UserNotAdmin
+>>>>>>> 94dcb8f408 (support onvif events reverse proxy)
 from .host import ReolinkHost
 
 _LOGGER = logging.getLogger(__name__)
@@ -215,6 +220,12 @@ class ReolinkFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             except ApiError as err:
                 placeholders["error"] = str(err)
                 errors[CONF_HOST] = "api_error"
+            except ReolinkWebhookException as err:
+                placeholders["error"] = str(err)
+                placeholders[
+                    "more_info"
+                ] = "https://www.home-assistant.io/more-info/no-url-available/#configuring-the-instance-url"
+                errors["base"] = "webhook_exception"
             except (ReolinkError, ReolinkException) as err:
                 placeholders["error"] = str(err)
                 errors[CONF_HOST] = "cannot_connect"
