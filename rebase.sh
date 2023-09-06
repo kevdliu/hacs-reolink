@@ -60,10 +60,16 @@ rm -rf ".git/rebase-apply"
 git fetch --all --prune
 
 tag=$(git describe --tags $(git rev-list --tags --max-count=1))
+if [ $? -ne 0 ]; then
+    error "Failed to get latest Home Assistant release tag. ${tag}"
+fi
 
 ok "Latest Home Assistant release tag is ${tag}"
 
 rebase=$(git rebase "$tag" "$HASS_BRANCH_NAME")
+if [ $? -ne 0 ]; then
+    error "Failed to rebase latest Home Assistant changes. ${rebase}"
+fi
 
 if [[ "$rebase" == *"up to date"* ]]; then
     if [ "$force_update" = true ]; then
@@ -74,7 +80,7 @@ if [[ "$rebase" == *"up to date"* ]]; then
     fi
 fi
 
-divider 
+divider
 
 echo "$rebase"
 ok "Rebased to latest release tag ${tag}"
