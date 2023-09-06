@@ -15,25 +15,16 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.components import dhcp, webhook
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_PORT, CONF_USERNAME
+from homeassistant.data_entry_flow import AbortFlow, FlowResult
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import format_mac
 
-<<<<<<< HEAD
-from .const import CONF_PROTOCOL, CONF_USE_HTTPS, DOMAIN
+from .const import CONF_PROTOCOL, CONF_USE_HTTPS, DOMAIN, CONF_ONVIF_EVENTS_REVERSE_PROXY
 from .exceptions import ReolinkException, ReolinkWebhookException, UserNotAdmin
-=======
-from .const import (
-    CONF_ONVIF_EVENTS_REVERSE_PROXY,
-    CONF_PROTOCOL,
-    CONF_USE_HTTPS,
-    DOMAIN,
-)
-from .exceptions import ReolinkException, ReolinkWebhookException, UserNotAdmin
->>>>>>> 94dcb8f408 (support onvif events reverse proxy)
 from .host import ReolinkHost
+from .util import has_connection_problem
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -183,7 +174,46 @@ class ReolinkFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_dhcp(self, discovery_info: dhcp.DhcpServiceInfo) -> FlowResult:
         """Handle discovery via dhcp."""
         mac_address = format_mac(discovery_info.macaddress)
-        await self.async_set_unique_id(mac_address)
+        existing_entry = await self.async_set_unique_id(mac_address)
+        if (
+            existing_entry
+            and CONF_PASSWORD in existing_entry.data
+            and existing_entry.data[CONF_HOST] != discovery_info.ip
+        ):
+            if has_connection_problem(self.hass, existing_entry):
+                _LOGGER.debug(
+                    "Reolink DHCP reported new IP '%s', "
+                    "but connection to camera seems to be okay, so sticking to IP '%s'",
+                    discovery_info.ip,
+                    existing_entry.data[CONF_HOST],
+                )
+                raise AbortFlow("already_configured")
+
+            # check if the camera is reachable at the new IP
+            host = ReolinkHost(self.hass, existing_entry.data, existing_entry.options)
+            try:
+                await host.api.get_state("GetLocalLink")
+                await host.api.logout()
+            except ReolinkError as err:
+                _LOGGER.debug(
+                    "Reolink DHCP reported new IP '%s', "
+                    "but got error '%s' trying to connect, so sticking to IP '%s'",
+                    discovery_info.ip,
+                    str(err),
+                    existing_entry.data[CONF_HOST],
+                )
+                raise AbortFlow("already_configured") from err
+            if format_mac(host.api.mac_address) != mac_address:
+                _LOGGER.debug(
+                    "Reolink mac address '%s' at new IP '%s' from DHCP, "
+                    "does not match mac '%s' of config entry, so sticking to IP '%s'",
+                    format_mac(host.api.mac_address),
+                    discovery_info.ip,
+                    mac_address,
+                    existing_entry.data[CONF_HOST],
+                )
+                raise AbortFlow("already_configured")
+
         self._abort_if_unique_id_configured(updates={CONF_HOST: discovery_info.ip})
 
         self.context["title_placeholders"] = {
