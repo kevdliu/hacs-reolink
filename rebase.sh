@@ -57,6 +57,8 @@ fi
 
 rm -rf ".git/rebase-apply"
 
+git add -A && git reset --hard
+
 git fetch --all --prune
 
 tag=$(git describe --tags $(git rev-list --tags --max-count=1))
@@ -92,6 +94,11 @@ ok "Pushed latest changes to remote (${HASS_REMOTE_FORK})"
 
 divider
 
+python3 -m script.translations develop --integration "$COMPONENT_NAME"
+ok "Generated translation file"
+
+divider
+
 cd - > /dev/null
 
 git pull -X theirs origin "$HACS_BRANCH_NAME"
@@ -99,12 +106,6 @@ git pull -X theirs origin "$HACS_BRANCH_NAME"
 rm -rf "./${HACS_COMPONENT_PATH}/${COMPONENT_NAME}"
 cp -rf "../${HASS_REPO_DIR}/${HASS_COMPONENT_PATH}/${COMPONENT_NAME}" "./${HACS_COMPONENT_PATH}"
 ok "Copied latest changes to HACS repo"
-
-divider
-
-mkdir "${HACS_COMPONENT_PATH}/${COMPONENT_NAME}/translations"
-cp -f "${HACS_COMPONENT_PATH}/${COMPONENT_NAME}/strings.json" "${HACS_COMPONENT_PATH}/${COMPONENT_NAME}/translations/en.json"
-ok "Copied translations file"
 
 divider
 
