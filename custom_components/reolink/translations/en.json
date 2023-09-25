@@ -216,6 +216,7 @@
                     "auto": "Auto",
                     "autoadaptive": "Auto adaptive",
                     "off": "Off",
+                    "onatnight": "On at night",
                     "schedule": "Schedule"
                 }
             },
