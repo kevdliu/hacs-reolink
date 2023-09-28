@@ -328,7 +328,7 @@ class ReolinkHost:
                 "Reolink error while unsubscribing from host %s:%s: %s",
                 self._api.host,
                 self._api.port,
-                str(err),
+                err,
             )
 
         try:
@@ -338,7 +338,7 @@ class ReolinkHost:
                 "Reolink error while logging out for host %s:%s: %s",
                 self._api.host,
                 self._api.port,
-                str(err),
+                err,
             )
 
     async def _async_start_long_polling(self, initial=False):
@@ -355,7 +355,7 @@ class ReolinkHost:
                     _LOGGER.error(
                         "Reolink %s event long polling subscription lost: %s",
                         self._api.nvr_name,
-                        str(err),
+                        err,
                     )
             except ReolinkError as err:
                 # make sure the long_poll_task is always created to try again later
@@ -364,7 +364,7 @@ class ReolinkHost:
                     _LOGGER.error(
                         "Reolink %s event long polling subscription lost: %s",
                         self._api.nvr_name,
-                        str(err),
+                        err,
                     )
             else:
                 self._lost_subscription = False
@@ -434,7 +434,7 @@ class ReolinkHost:
                 _LOGGER.error(
                     "Reolink %s event subscription lost: %s",
                     self._api.nvr_name,
-                    str(err),
+                    err,
                 )
         else:
             self._lost_subscription = False
@@ -580,7 +580,7 @@ class ReolinkHost:
                 "Reolink error while polling motion state for host %s:%s: %s",
                 self._api.host,
                 self._api.port,
-                str(err),
+                err,
             )
         finally:
             # schedule next poll
