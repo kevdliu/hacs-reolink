@@ -32,6 +32,15 @@
     },
     "entity": {
         "binary_sensor": {
+            "animal": {
+                "name": "Animal"
+            },
+            "animal_lens_0": {
+                "name": "Animal lens 0"
+            },
+            "animal_lens_1": {
+                "name": "Animal lens 1"
+            },
             "face": {
                 "name": "Face"
             },
@@ -116,6 +125,62 @@
                 "name": "PTZ zoom out"
             }
         },
+        "camera": {
+            "autotrack_snapshots_main": {
+                "name": "Autotrack snapshots clear"
+            },
+            "autotrack_snapshots_sub": {
+                "name": "Autotrack snapshots fluent"
+            },
+            "autotrack_sub": {
+                "name": "Autotrack fluent"
+            },
+            "ext": {
+                "name": "Balanced"
+            },
+            "ext_lens_0": {
+                "name": "Balanced lens 0"
+            },
+            "ext_lens_1": {
+                "name": "Balanced lens 1"
+            },
+            "main": {
+                "name": "Clear"
+            },
+            "main_lens_0": {
+                "name": "Clear lens 0"
+            },
+            "main_lens_1": {
+                "name": "Clear lens 1"
+            },
+            "snapshots_main": {
+                "name": "Snapshots clear"
+            },
+            "snapshots_main_lens_0": {
+                "name": "Snapshots clear lens 0"
+            },
+            "snapshots_main_lens_1": {
+                "name": "Snapshots clear lens 1"
+            },
+            "snapshots_sub": {
+                "name": "Snapshots fluent"
+            },
+            "snapshots_sub_lens_0": {
+                "name": "Snapshots fluent lens 0"
+            },
+            "snapshots_sub_lens_1": {
+                "name": "Snapshots fluent lens 1"
+            },
+            "sub": {
+                "name": "Fluent"
+            },
+            "sub_lens_0": {
+                "name": "Fluent lens 0"
+            },
+            "sub_lens_1": {
+                "name": "Fluent lens 1"
+            }
+        },
         "light": {
             "floodlight": {
                 "name": "Floodlight"
@@ -128,6 +193,12 @@
             }
         },
         "number": {
+            "ai_animal_delay": {
+                "name": "AI animal delay"
+            },
+            "ai_animal_sensititvity": {
+                "name": "AI animal sensitivity"
+            },
             "ai_face_delay": {
                 "name": "AI face delay"
             },
@@ -167,6 +238,9 @@
             "auto_track_stop_time": {
                 "name": "Auto track stop time"
             },
+            "day_night_switch_threshold": {
+                "name": "Day night switch threshold"
+            },
             "floodlight_brightness": {
                 "name": "Floodlight turn on brightness"
             },
@@ -205,7 +279,7 @@
                 "name": "Day night mode",
                 "state": {
                     "auto": "Auto",
-                    "blackwhite": "Black&White",
+                    "blackwhite": "Black & white",
                     "color": "Color"
                 }
             },
@@ -267,6 +341,9 @@
             "gaurd_return": {
                 "name": "Guard return"
             },
+            "hdr": {
+                "name": "HDR"
+            },
             "push_notifications": {
                 "name": "Push notifications"
             },
@@ -317,6 +394,18 @@
                     "protocol": "Protocol"
                 }
             }
+        }
+    },
+    "services": {
+        "ptz_move": {
+            "description": "Move the camera with a specific speed.",
+            "fields": {
+                "speed": {
+                    "description": "PTZ move speed.",
+                    "name": "Speed"
+                }
+            },
+            "name": "PTZ move"
         }
     }
 }
