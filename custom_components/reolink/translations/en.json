@@ -26,6 +26,9 @@
                     "use_https": "Enable HTTPS",
                     "username": "Username"
                 },
+                "data_description": {
+                    "host": "The hostname or IP address of your Reolink device. For example: '192.168.1.25'."
+                },
                 "description": "See the [troubleshooting steps]({troubleshooting_link}) if you encounter problems. {error}"
             }
         }
