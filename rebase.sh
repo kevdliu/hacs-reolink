@@ -3,6 +3,8 @@
 set -e
 
 # Configuration
+WORKING_DIR="/tasker/git/"
+
 COMPONENT_NAME="reolink"
 
 HASS_REPO_DIR="hass"
@@ -10,6 +12,7 @@ HASS_COMPONENT_PATH="homeassistant/components/"
 HASS_BRANCH_NAME="hacs/reolink"
 HASS_REMOTE_FORK="fork"
 
+HACS_REPO_DIR="hacs-reolink"
 HACS_BRANCH_NAME="master"
 HACS_COMPONENT_PATH="custom_components/"
 
@@ -48,7 +51,8 @@ divider () {
 
 # Start
 
-cd "../${HASS_REPO_DIR}"
+cd "${WORKING_DIR}"
+cd "${HASS_REPO_DIR}"
 
 current=$(git branch --show-current)
 if [[ "$current" != "$HASS_BRANCH_NAME" ]]; then
@@ -99,7 +103,8 @@ ok "Generated translation file"
 
 divider
 
-cd - > /dev/null
+cd "${WORKING_DIR}"
+cd "${HACS_REPO_DIR}"
 
 git pull -X theirs origin "$HACS_BRANCH_NAME"
 
