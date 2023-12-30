@@ -13,7 +13,13 @@ from reolink_aio.enums import SubType
 from reolink_aio.exceptions import NotSupportedError, ReolinkError, SubscriptionError
 
 from homeassistant.components import webhook
-from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_PORT, CONF_USERNAME
+from homeassistant.const import (
+    CONF_HOST,
+    CONF_PASSWORD,
+    CONF_PORT,
+    CONF_PROTOCOL,
+    CONF_USERNAME,
+)
 from homeassistant.core import CALLBACK_TYPE, HassJob, HomeAssistant
 from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers.device_registry import format_mac
@@ -21,12 +27,7 @@ from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.network import NoURLAvailableError, get_url
 
-from .const import (
-    CONF_ONVIF_EVENTS_REVERSE_PROXY,
-    CONF_PROTOCOL,
-    CONF_USE_HTTPS,
-    DOMAIN,
-)
+from .const import CONF_USE_HTTPS, DOMAIN, CONF_ONVIF_EVENTS_REVERSE_PROXY
 from .exceptions import ReolinkSetupException, ReolinkWebhookException, UserNotAdmin
 
 DEFAULT_TIMEOUT = 30
@@ -64,6 +65,8 @@ class ReolinkHost:
             protocol=options[CONF_PROTOCOL],
             timeout=DEFAULT_TIMEOUT,
         )
+
+        self.update_cmd_list: list[str] = []
 
         self.webhook_id: str | None = None
         self._onvif_push_supported: bool = True
@@ -317,7 +320,7 @@ class ReolinkHost:
 
     async def update_states(self) -> None:
         """Call the API of the camera device to update the internal states."""
-        await self._api.get_states()
+        await self._api.get_states(cmd_list=self.update_cmd_list)
 
     async def disconnect(self) -> None:
         """Disconnect from the API, so the connection will be released."""
