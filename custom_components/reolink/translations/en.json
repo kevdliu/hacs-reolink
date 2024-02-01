@@ -254,6 +254,21 @@
             "guard_return_time": {
                 "name": "Guard return time"
             },
+            "image_brightness": {
+                "name": "Image brightness"
+            },
+            "image_contrast": {
+                "name": "Image contrast"
+            },
+            "image_hue": {
+                "name": "Image hue"
+            },
+            "image_saturation": {
+                "name": "Image saturation"
+            },
+            "image_sharpness": {
+                "name": "Image sharpness"
+            },
             "motion_sensitivity": {
                 "name": "Motion sensitivity"
             },
