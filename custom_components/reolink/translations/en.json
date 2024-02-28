@@ -16,7 +16,7 @@
         "step": {
             "reauth_confirm": {
                 "description": "The Reolink integration needs to re-authenticate your connection details",
-                "title": "Reauthenticate integration"
+                "title": "Authentication expired for {name}"
             },
             "user": {
                 "data": {
