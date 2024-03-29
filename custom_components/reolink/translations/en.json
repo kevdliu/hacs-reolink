@@ -63,6 +63,15 @@
             "motion_lens_1": {
                 "name": "Motion lens 1"
             },
+            "package": {
+                "name": "Package"
+            },
+            "package_lens_0": {
+                "name": "Package lens 0"
+            },
+            "package_lens_1": {
+                "name": "Package lens 1"
+            },
             "person": {
                 "name": "Person"
             },
@@ -200,31 +209,37 @@
             "ai_animal_delay": {
                 "name": "AI animal delay"
             },
-            "ai_animal_sensititvity": {
+            "ai_animal_sensitivity": {
                 "name": "AI animal sensitivity"
             },
             "ai_face_delay": {
                 "name": "AI face delay"
             },
-            "ai_face_sensititvity": {
+            "ai_face_sensitivity": {
                 "name": "AI face sensitivity"
+            },
+            "ai_package_delay": {
+                "name": "AI package delay"
+            },
+            "ai_package_sensitivity": {
+                "name": "AI package sensitivity"
             },
             "ai_person_delay": {
                 "name": "AI person delay"
             },
-            "ai_person_sensititvity": {
+            "ai_person_sensitivity": {
                 "name": "AI person sensitivity"
             },
             "ai_pet_delay": {
                 "name": "AI pet delay"
             },
-            "ai_pet_sensititvity": {
+            "ai_pet_sensitivity": {
                 "name": "AI pet sensitivity"
             },
             "ai_vehicle_delay": {
                 "name": "AI vehicle delay"
             },
-            "ai_vehicle_sensititvity": {
+            "ai_vehicle_sensitivity": {
                 "name": "AI vehicle sensitivity"
             },
             "auto_quick_reply_time": {
@@ -313,6 +328,9 @@
                     "schedule": "Schedule"
                 }
             },
+            "play_quick_reply_message": {
+                "name": "Play quick reply message"
+            },
             "ptz_preset": {
                 "name": "PTZ preset"
             },
@@ -327,8 +345,14 @@
             }
         },
         "sensor": {
+            "hdd_storage": {
+                "name": "HDD {hdd_index} storage"
+            },
             "ptz_pan_position": {
                 "name": "PTZ pan position"
+            },
+            "sd_storage": {
+                "name": "SD {hdd_index} storage"
             },
             "wifi_signal": {
                 "name": "Wi-Fi signal"
@@ -358,7 +382,7 @@
             "ftp_upload": {
                 "name": "FTP upload"
             },
-            "gaurd_return": {
+            "guard_return": {
                 "name": "Guard return"
             },
             "hdr": {
@@ -366,6 +390,9 @@
             },
             "ir_lights": {
                 "name": "Infra red lights in night mode"
+            },
+            "ptz_patrol": {
+                "name": "PTZ patrol"
             },
             "push_notifications": {
                 "name": "Push notifications"
