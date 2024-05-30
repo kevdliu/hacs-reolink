@@ -287,6 +287,9 @@
             "motion_sensitivity": {
                 "name": "Motion sensitivity"
             },
+            "pir_sensitivity": {
+                "name": "PIR sensitivity"
+            },
             "volume": {
                 "name": "Volume"
             },
@@ -345,6 +348,17 @@
             }
         },
         "sensor": {
+            "battery_state": {
+                "name": "Battery state",
+                "state": {
+                    "chargecomplete": "Charge complete",
+                    "charging": "Charging",
+                    "discharging": "Discharging"
+                }
+            },
+            "battery_temperature": {
+                "name": "Battery temperature"
+            },
             "hdd_storage": {
                 "name": "HDD {hdd_index} storage"
             },
@@ -390,6 +404,12 @@
             },
             "ir_lights": {
                 "name": "Infra red lights in night mode"
+            },
+            "pir_enabled": {
+                "name": "PIR enabled"
+            },
+            "pir_reduce_alarm": {
+                "name": "PIR reduce false alarm"
             },
             "ptz_patrol": {
                 "name": "PTZ patrol"
