@@ -320,6 +320,15 @@
                     "color": "Color"
                 }
             },
+            "doorbell_led": {
+                "name": "Doorbell LED",
+                "state": {
+                    "alwayson": "Always on",
+                    "alwaysonatnight": "Auto & always on at night",
+                    "auto": "Auto",
+                    "stayoff": "Stay off"
+                }
+            },
             "floodlight_mode": {
                 "name": "Floodlight mode",
                 "state": {
@@ -336,15 +345,6 @@
             },
             "ptz_preset": {
                 "name": "PTZ preset"
-            },
-            "status_led": {
-                "name": "Status LED",
-                "state": {
-                    "alwayson": "Always on",
-                    "alwaysonatnight": "Auto & always on at night",
-                    "auto": "Auto",
-                    "stayoff": "Stay off"
-                }
             }
         },
         "sensor": {
