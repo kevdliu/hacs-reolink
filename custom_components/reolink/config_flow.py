@@ -29,7 +29,7 @@ from homeassistant.const import (
 )
 from homeassistant.core import callback, HomeAssistant
 from homeassistant.data_entry_flow import AbortFlow
-from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import config_validation as cv, selector
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import format_mac
 
@@ -101,8 +101,26 @@ class ReolinkOptionsFlowHandler(OptionsFlow):
             step_id="init",
             data_schema=vol.Schema(
                 {
-                    vol.Required(CONF_PROTOCOL, default=self.protocol): vol.In(
-                        ["rtsp", "rtmp", "flv"]
+                    vol.Required(
+                        CONF_PROTOCOL,
+                        default=self.config_entry.options[CONF_PROTOCOL],
+                    ): selector.SelectSelector(
+                        selector.SelectSelectorConfig(
+                            options=[
+                                selector.SelectOptionDict(
+                                    value="rtsp",
+                                    label="RTSP",
+                                ),
+                                selector.SelectOptionDict(
+                                    value="rtmp",
+                                    label="RTMP",
+                                ),
+                                selector.SelectOptionDict(
+                                    value="flv",
+                                    label="FLV",
+                                ),
+                            ],
+                        ),
                     ),
                     vol.Optional(
                         CONF_ONVIF_EVENTS_REVERSE_PROXY,
