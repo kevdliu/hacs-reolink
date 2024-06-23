@@ -103,7 +103,7 @@ class ReolinkOptionsFlowHandler(OptionsFlow):
                 {
                     vol.Required(
                         CONF_PROTOCOL,
-                        default=self.config_entry.options[CONF_PROTOCOL],
+                        default=self.protocol,
                     ): selector.SelectSelector(
                         selector.SelectSelectorConfig(
                             options=[
