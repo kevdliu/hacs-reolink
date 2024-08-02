@@ -9,6 +9,7 @@
             "cannot_connect": "Failed to connect, check the IP address of the camera",
             "invalid_auth": "Invalid authentication",
             "not_admin": "User needs to be admin, user \"{username}\" has authorisation level \"{userlevel}\"",
+            "password_incompatible": "Password contains incompatible special character, only these characters are allowed: a-z, A-Z, 0-9 or {special_chars}",
             "unknown": "Unexpected error",
             "webhook_exception": "Home Assistant URL is not available, go to Settings > System > Network > Home Assistant URL and correct the URLs, see {more_info}"
         },
@@ -427,11 +428,67 @@
                     "schedule": "Schedule"
                 }
             },
+            "hdr": {
+                "name": "HDR",
+                "state": {
+                    "auto": "Auto",
+                    "off": "Off",
+                    "on": "On"
+                }
+            },
+            "motion_tone": {
+                "name": "Motion ringtone",
+                "state": {
+                    "attraction": "Attraction",
+                    "citybird": "City bird",
+                    "goodday": "Good day",
+                    "hophop": "Hop hop",
+                    "loop": "Loop",
+                    "moonlight": "Moonlight",
+                    "off": "Off",
+                    "operetta": "Operetta",
+                    "originaltune": "Original tune",
+                    "pianokey": "Piano key",
+                    "waybackhome": "Way back home"
+                }
+            },
+            "people_tone": {
+                "name": "Person ringtone",
+                "state": {
+                    "attraction": "Attraction",
+                    "citybird": "City bird",
+                    "goodday": "Good day",
+                    "hophop": "Hop hop",
+                    "loop": "Loop",
+                    "moonlight": "Moonlight",
+                    "off": "Off",
+                    "operetta": "Operetta",
+                    "originaltune": "Original tune",
+                    "pianokey": "Piano key",
+                    "waybackhome": "Way back home"
+                }
+            },
             "play_quick_reply_message": {
                 "name": "Play quick reply message"
             },
             "ptz_preset": {
                 "name": "PTZ preset"
+            },
+            "visitor_tone": {
+                "name": "Visitor ringtone",
+                "state": {
+                    "attraction": "Attraction",
+                    "citybird": "City bird",
+                    "goodday": "Good day",
+                    "hophop": "Hop hop",
+                    "loop": "Loop",
+                    "moonlight": "Moonlight",
+                    "off": "Off",
+                    "operetta": "Operetta",
+                    "originaltune": "Original tune",
+                    "pianokey": "Piano key",
+                    "waybackhome": "Way back home"
+                }
             }
         },
         "sensor": {
@@ -492,6 +549,9 @@
             "ir_lights": {
                 "name": "Infra red lights in night mode"
             },
+            "led": {
+                "name": "LED"
+            },
             "manual_record": {
                 "name": "Manual record"
             },
@@ -526,6 +586,10 @@
         "firmware_update": {
             "description": "\"{name}\" with model \"{model}\" and hardware version \"{hw_version}\" is running a old firmware version \"{current_firmware}\", while at least firmware version \"{required_firmware}\" is required for proper operation of the Reolink integration. The latest firmware can be downloaded from the [Reolink download center]({download_link}).",
             "title": "Reolink firmware update required"
+        },
+        "hdr_switch_deprecated": {
+            "description": "The Reolink HDR switch entity is deprecated and will be removed in HA 2025.2.0. It has been replaced by a HDR select entity offering options `on`, `off` and `auto`. To remove this issue, please adjust automations accordingly and disable the HDR switch entity.",
+            "title": "Reolink HDR switch deprecated"
         },
         "https_webhook": {
             "description": "Reolink products can not push motion events to an HTTPS address (SSL), please configure a (local) HTTP address under \"Home Assistant URL\" in the [network settings]({network_link}). The current (local) address is: `{base_url}`, a valid address could, for example, be `http://192.168.1.10:8123` where `192.168.1.10` is the IP of the Home Assistant device. Alternatively, if you have configured Home Assistant to use HTTPS, you may set up a HTTP reverse proxy in front of Home Assistant and input the proxy's address in the integration's options menu.",
