@@ -578,6 +578,14 @@
             }
         }
     },
+    "exceptions": {
+        "service_entry_ex": {
+            "message": "Reolink {service_name} error: config entry not found or not loaded"
+        },
+        "service_not_chime": {
+            "message": "Reolink play_chime error: {device_name} is not a chime"
+        }
+    },
     "issues": {
         "enable_port": {
             "description": "Failed to automatically enable {ports}port(s) on {name}. Use the [Reolink client]({info_link}) to manually set it to ON",
@@ -623,7 +631,37 @@
             }
         }
     },
+    "selector": {
+        "ringtone": {
+            "options": {
+                "attraction": "Attraction",
+                "citybird": "City bird",
+                "goodday": "Good day",
+                "hophop": "Hop hop",
+                "loop": "Loop",
+                "moonlight": "Moonlight",
+                "operetta": "Operetta",
+                "originaltune": "Original tune",
+                "pianokey": "Piano key",
+                "waybackhome": "Way back home"
+            }
+        }
+    },
     "services": {
+        "play_chime": {
+            "description": "Play a ringtone on a chime.",
+            "fields": {
+                "device_id": {
+                    "description": "The chime to play the ringtone on.",
+                    "name": "Target chime"
+                },
+                "ringtone": {
+                    "description": "Ringtone to play.",
+                    "name": "Ringtone"
+                }
+            },
+            "name": "Play chime"
+        },
         "ptz_move": {
             "description": "Move the camera with a specific speed.",
             "fields": {
