@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Device is already configured",
-            "reauth_successful": "Re-authentication was successful"
+            "reauth_successful": "Re-authentication was successful",
+            "reconfigure_successful": "Re-configuration was successful"
         },
         "error": {
             "api_error": "API error occurred",
@@ -330,6 +331,9 @@
             "ai_vehicle_sensitivity": {
                 "name": "AI vehicle sensitivity"
             },
+            "alarm_volume": {
+                "name": "Alarm volume"
+            },
             "auto_quick_reply_time": {
                 "name": "Auto quick reply time"
             },
@@ -371,6 +375,9 @@
             },
             "image_sharpness": {
                 "name": "Image sharpness"
+            },
+            "message_volume": {
+                "name": "Message volume"
             },
             "motion_sensitivity": {
                 "name": "Motion sensitivity"
@@ -436,8 +443,56 @@
                     "on": "On"
                 }
             },
+            "hub_alarm_ringtone": {
+                "name": "Hub alarm ringtone",
+                "state": {
+                    "alarm": "Alarm",
+                    "attraction": "Attraction",
+                    "citybird": "City bird",
+                    "goodday": "Good day",
+                    "hophop": "Hop hop",
+                    "loop": "Loop",
+                    "moonlight": "Moonlight",
+                    "operetta": "Operetta",
+                    "originaltune": "Original tune",
+                    "pianokey": "Piano key",
+                    "waybackhome": "Way back home"
+                }
+            },
+            "hub_visitor_ringtone": {
+                "name": "Hub visitor ringtone",
+                "state": {
+                    "alarm": "Alarm",
+                    "attraction": "Attraction",
+                    "citybird": "City bird",
+                    "goodday": "Good day",
+                    "hophop": "Hop hop",
+                    "loop": "Loop",
+                    "moonlight": "Moonlight",
+                    "operetta": "Operetta",
+                    "originaltune": "Original tune",
+                    "pianokey": "Piano key",
+                    "waybackhome": "Way back home"
+                }
+            },
             "motion_tone": {
                 "name": "Motion ringtone",
+                "state": {
+                    "attraction": "Attraction",
+                    "citybird": "City bird",
+                    "goodday": "Good day",
+                    "hophop": "Hop hop",
+                    "loop": "Loop",
+                    "moonlight": "Moonlight",
+                    "off": "Off",
+                    "operetta": "Operetta",
+                    "originaltune": "Original tune",
+                    "pianokey": "Piano key",
+                    "waybackhome": "Way back home"
+                }
+            },
+            "package_tone": {
+                "name": "Package ringtone",
                 "state": {
                     "attraction": "Attraction",
                     "citybird": "City bird",
@@ -503,6 +558,9 @@
             "battery_temperature": {
                 "name": "Battery temperature"
             },
+            "cpu_usage": {
+                "name": "CPU usage"
+            },
             "hdd_storage": {
                 "name": "HDD {hdd_index} storage"
             },
@@ -528,9 +586,6 @@
             "auto_tracking": {
                 "name": "Auto tracking"
             },
-            "buzzer": {
-                "name": "Buzzer on event"
-            },
             "doorbell_button_sound": {
                 "name": "Doorbell button sound"
             },
@@ -545,6 +600,9 @@
             },
             "hdr": {
                 "name": "HDR"
+            },
+            "hub_ringtone_on_event": {
+                "name": "Hub ringtone on event"
             },
             "ir_lights": {
                 "name": "Infra red lights in night mode"
@@ -602,6 +660,10 @@
         "https_webhook": {
             "description": "Reolink products can not push motion events to an HTTPS address (SSL), please configure a (local) HTTP address under \"Home Assistant URL\" in the [network settings]({network_link}). The current (local) address is: `{base_url}`, a valid address could, for example, be `http://192.168.1.10:8123` where `192.168.1.10` is the IP of the Home Assistant device. Alternatively, if you have configured Home Assistant to use HTTPS, you may set up a HTTP reverse proxy in front of Home Assistant and input the proxy's address in the integration's options menu.",
             "title": "Reolink webhook URL uses HTTPS (SSL)"
+        },
+        "hub_switch_deprecated": {
+            "description": "The redundant 'Record', 'Email on event', 'FTP upload', 'Push notifications', and 'Buzzer on event' switches on the Reolink Home Hub are depricated since the new firmware no longer supports these. Please use the equally named switches under each of the camera devices connected to the Home Hub instead. To remove this issue, please adjust automations accordingly and disable the switch entities mentioned.",
+            "title": "Reolink Home Hub switches deprecated"
         },
         "ssl": {
             "description": "Global SSL certificate configured in the [configuration.yaml under http]({ssl_link}) while a local HTTP address `{base_url}` is configured under \"Home Assistant URL\" in the [network settings]({network_link}). Therefore, the Reolink device can not reach Home Assistant to push its motion/AI events. Please make sure the local HTTP address is not covered by the SSL certificate, by for instance using [NGINX add-on]({nginx_link}) instead of a globally enforced SSL certificate.",
