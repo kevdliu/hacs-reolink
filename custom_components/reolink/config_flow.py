@@ -65,9 +65,8 @@ WEBHOOK_REACHABILITY_TEST_TIMEOUT = 10
 class ReolinkOptionsFlowHandler(OptionsFlow):
     """Handle Reolink options."""
 
-    def __init__(self, config_entry: ReolinkConfigEntry) -> None:
+    def __init__(self) -> None:
         """Initialize ReolinkOptionsFlowHandler."""
-        self.config_options = config_entry.options
         self.protocol = self.config_options[CONF_PROTOCOL]
         self.webhook_reverse_proxy = self.config_options.get(
             CONF_ONVIF_EVENTS_REVERSE_PROXY
@@ -190,7 +189,7 @@ class ReolinkFlowHandler(ConfigFlow, domain=DOMAIN):
         config_entry: ReolinkConfigEntry,
     ) -> ReolinkOptionsFlowHandler:
         """Options callback for Reolink."""
-        return ReolinkOptionsFlowHandler(config_entry)
+        return ReolinkOptionsFlowHandler()
 
     async def async_step_reauth(
         self, entry_data: Mapping[str, Any]

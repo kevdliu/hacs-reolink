@@ -408,6 +408,14 @@
                     "pantiltfirst": "Pan/tilt first"
                 }
             },
+            "binning_mode": {
+                "name": "Binning mode",
+                "state": {
+                    "auto": "Auto",
+                    "off": "Off",
+                    "on": "On"
+                }
+            },
             "day_night_mode": {
                 "name": "Day night mode",
                 "state": {
@@ -476,6 +484,12 @@
                     "waybackhome": "Way back home"
                 }
             },
+            "main_bit_rate": {
+                "name": "Clear bit rate"
+            },
+            "main_frame_rate": {
+                "name": "Clear frame rate"
+            },
             "motion_tone": {
                 "name": "Motion ringtone",
                 "state": {
@@ -530,6 +544,28 @@
             "ptz_preset": {
                 "name": "PTZ preset"
             },
+            "sub_bit_rate": {
+                "name": "Fluent bit rate"
+            },
+            "sub_frame_rate": {
+                "name": "Fluent frame rate"
+            },
+            "vehicle_tone": {
+                "name": "Vehicle ringtone",
+                "state": {
+                    "attraction": "Attraction",
+                    "citybird": "City bird",
+                    "goodday": "Good day",
+                    "hophop": "Hop hop",
+                    "loop": "Loop",
+                    "moonlight": "Moonlight",
+                    "off": "Off",
+                    "operetta": "Operetta",
+                    "originaltune": "Original tune",
+                    "pianokey": "Piano key",
+                    "waybackhome": "Way back home"
+                }
+            },
             "visitor_tone": {
                 "name": "Visitor ringtone",
                 "state": {
@@ -567,6 +603,9 @@
             },
             "ptz_pan_position": {
                 "name": "PTZ pan position"
+            },
+            "ptz_tilt_position": {
+                "name": "PTZ tilt position"
             },
             "sd_storage": {
                 "name": "SD {hdd_index} storage"
