@@ -1,2 +1,2 @@
 # Reolink
-Latest version is based on Home Assistant 2025.3.0b1
+Latest version is based on Home Assistant 2025.3.4
