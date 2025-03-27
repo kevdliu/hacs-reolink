@@ -11,6 +11,7 @@ from aiohttp import ClientResponseError, InvalidURL
 from aiohttp.web import Request
 import async_timeout
 from reolink_aio.api import ALLOWED_SPECIAL_CHARS
+from reolink_aio.baichuan import DEFAULT_BC_PORT
 from reolink_aio.exceptions import (
     ApiError,
     CredentialsInvalidError,
@@ -42,7 +43,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import format_mac
 from homeassistant.helpers.service_info.dhcp import DhcpServiceInfo
 
-from .const import CONF_SUPPORTS_PRIVACY_MODE, CONF_USE_HTTPS, DOMAIN, CONF_ONVIF_EVENTS_REVERSE_PROXY
+from .const import CONF_BC_PORT, CONF_SUPPORTS_PRIVACY_MODE, CONF_USE_HTTPS, DOMAIN, CONF_ONVIF_EVENTS_REVERSE_PROXY
 from .exceptions import (
     PasswordIncompatible,
     ReolinkException,
@@ -367,6 +368,7 @@ class ReolinkFlowHandler(ConfigFlow, domain=DOMAIN):
             if not errors:
                 user_input[CONF_PORT] = host.api.port
                 user_input[CONF_USE_HTTPS] = host.api.use_https
+                user_input[CONF_BC_PORT] = host.api.baichuan.port
                 user_input[CONF_SUPPORTS_PRIVACY_MODE] = host.api.supported(
                     None, "privacy_mode"
                 )
@@ -406,8 +408,9 @@ class ReolinkFlowHandler(ConfigFlow, domain=DOMAIN):
         if errors:
             data_schema = data_schema.extend(
                 {
-                    vol.Optional(CONF_PORT): cv.positive_int,
+                    vol.Optional(CONF_PORT): cv.port,
                     vol.Required(CONF_USE_HTTPS, default=False): bool,
+                    vol.Required(CONF_BC_PORT, default=DEFAULT_BC_PORT): cv.port,
                 }
             )
 

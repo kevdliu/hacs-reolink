@@ -11,7 +11,7 @@
             "cannot_connect": "Failed to connect, check the IP address of the camera",
             "invalid_auth": "Invalid authentication",
             "not_admin": "User needs to be admin, user \"{username}\" has authorisation level \"{userlevel}\"",
-            "password_incompatible": "Password contains incompatible special character, only these characters are allowed: a-z, A-Z, 0-9 or {special_chars}",
+            "password_incompatible": "Password contains incompatible special character or is too long, maximum 31 characters and only these characters are allowed: a-z, A-Z, 0-9 or {special_chars}",
             "unknown": "Unexpected error",
             "update_needed": "Failed to login because of outdated firmware, please update the firmware to version {needed_firmware} using the Reolink Download Center: {download_center_url}, currently version {current_firmware} is installed",
             "webhook_exception": "Home Assistant URL is not available, go to Settings > System > Network > Home Assistant URL and correct the URLs, see {more_info}"
@@ -24,6 +24,7 @@
             },
             "user": {
                 "data": {
+                    "baichuan_port": "Basic service port",
                     "host": "Host",
                     "password": "Password",
                     "port": "Port",
@@ -31,9 +32,10 @@
                     "username": "Username"
                 },
                 "data_description": {
+                    "baichuan_port": "The 'Basic Service Port' to connect to the Reolink device over TCP. Normally '9000' unless manually changed in the Reolink desktop client.",
                     "host": "The hostname or IP address of your Reolink device. For example: '192.168.1.25'.",
                     "password": "Password to login to the Reolink device itself. Not the Reolink cloud account.",
-                    "port": "The port to connect to the Reolink device. For HTTP normally: '80', for HTTPS normally '443'.",
+                    "port": "The HTTP(s) port to connect to the Reolink device API. For HTTP normally: '80', for HTTPS normally '443'.",
                     "use_https": "Use a HTTPS (SSL) connection to the Reolink device.",
                     "username": "Username to login to the Reolink device itself. Not the Reolink cloud account."
                 },
@@ -64,6 +66,27 @@
                     "on": "Detected"
                 }
             },
+            "crossline_dog_cat": {
+                "name": "Crossline {zone_name} animal",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
+            "crossline_person": {
+                "name": "Crossline {zone_name} person",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
+            "crossline_vehicle": {
+                "name": "Crossline {zone_name} vehicle",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
             "cry": {
                 "name": "Baby crying",
                 "state": {
@@ -87,6 +110,55 @@
             },
             "face_lens_1": {
                 "name": "Face lens 1",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
+            "forgotten_item": {
+                "name": "Item forgotten {zone_name}",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
+            "intrusion_dog_cat": {
+                "name": "Intrusion {zone_name} animal",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
+            "intrusion_person": {
+                "name": "Intrusion {zone_name} person",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
+            "intrusion_vehicle": {
+                "name": "Intrusion {zone_name} vehicle",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
+            "linger_dog_cat": {
+                "name": "Linger {zone_name} animal",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
+            "linger_person": {
+                "name": "Linger {zone_name} person",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
+            "linger_vehicle": {
+                "name": "Linger {zone_name} vehicle",
                 "state": {
                     "off": "Clear",
                     "on": "Detected"
@@ -174,6 +246,13 @@
                 "state": {
                     "off": "Awake",
                     "on": "Sleeping"
+                }
+            },
+            "taken_item": {
+                "name": "Item taken {zone_name}",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
                 }
             },
             "vehicle": {
@@ -358,6 +437,9 @@
             "auto_track_stop_time": {
                 "name": "Auto track stop time"
             },
+            "crossline_sensitivity": {
+                "name": "AI crossline {zone_name} sensitivity"
+            },
             "day_night_switch_threshold": {
                 "name": "Day night switch threshold"
             },
@@ -366,6 +448,12 @@
             },
             "focus": {
                 "name": "Focus"
+            },
+            "forgotten_item_delay": {
+                "name": "AI item forgotten {zone_name} delay"
+            },
+            "forgotten_item_sensitivity": {
+                "name": "AI item forgotten {zone_name} sensitivity"
             },
             "guard_return_time": {
                 "name": "Guard return time"
@@ -385,6 +473,18 @@
             "image_sharpness": {
                 "name": "Image sharpness"
             },
+            "intrusion_delay": {
+                "name": "AI intrusion {zone_name} delay"
+            },
+            "intrusion_sensitivity": {
+                "name": "AI intrusion {zone_name} sensitivity"
+            },
+            "linger_delay": {
+                "name": "AI linger {zone_name} delay"
+            },
+            "linger_sensitivity": {
+                "name": "AI linger {zone_name} sensitivity"
+            },
             "message_volume": {
                 "name": "Message volume"
             },
@@ -393,6 +493,12 @@
             },
             "pir_sensitivity": {
                 "name": "PIR sensitivity"
+            },
+            "taken_item_delay": {
+                "name": "AI item taken {zone_name} delay"
+            },
+            "taken_item_sensitivity": {
+                "name": "AI item taken {zone_name} sensitivity"
             },
             "volume": {
                 "name": "Volume"
@@ -553,6 +659,15 @@
             "ptz_preset": {
                 "name": "PTZ preset"
             },
+            "scene_mode": {
+                "name": "Scene mode",
+                "state": {
+                    "away": "Away",
+                    "disarm": "Disarmed",
+                    "home": "Home",
+                    "off": "Off"
+                }
+            },
             "sub_bit_rate": {
                 "name": "Fluent bit rate"
             },
@@ -606,6 +721,14 @@
             },
             "cpu_usage": {
                 "name": "CPU usage"
+            },
+            "day_night_state": {
+                "name": "Day night state",
+                "state": {
+                    "day": "Color",
+                    "led_day": "Color with floodlight",
+                    "night": "Black & white"
+                }
             },
             "hdd_storage": {
                 "name": "HDD {hdd_index} storage"
@@ -693,13 +816,16 @@
             "message": "The device responded with a error: {err}"
         },
         "config_entry_not_ready": {
-            "message": "Error while trying to setup {host}: {err}"
+            "message": "Error while trying to set up {host}: {err}"
         },
         "connection_error": {
             "message": "Could not connect to the device: {err}"
         },
         "firmware_install_error": {
             "message": "Error trying to update Reolink firmware: {err}"
+        },
+        "firmware_rate_limit": {
+            "message": "Reolink firmware update server reached hourly rate limit: updating can be tried again in 1 hour"
         },
         "invalid_content_type": {
             "message": "Received a different content type than expected: {err}"
@@ -736,6 +862,9 @@
         },
         "unexpected_data": {
             "message": "Device returned unexpected data: {err}"
+        },
+        "update_already_running": {
+            "message": "Reolink firmware update already running, wait on completion before starting another"
         }
     },
     "issues": {
@@ -754,6 +883,10 @@
         "hub_switch_deprecated": {
             "description": "The redundant 'Record', 'Email on event', 'FTP upload', 'Push notifications', and 'Buzzer on event' switches on the Reolink Home Hub are deprecated since the new firmware no longer supports these. Please use the equally named switches under each of the camera devices connected to the Home Hub instead. To remove this issue, please adjust automations accordingly and disable the switch entities mentioned.",
             "title": "Reolink Home Hub switches deprecated"
+        },
+        "password_too_long": {
+            "description": "The password for \"{name}\" is more than 31 characters long, this is no longer compatible with the Reolink API. Please change the password using the Reolink app/client to a password with is shorter than 32 characters. After changing the password, fill in the new password in the Reolink Re-authentication flow to continue using this integration. The latest version of the Reolink app/client also has a password limit of 31 characters.",
+            "title": "Reolink password too long"
         },
         "ssl": {
             "description": "Global SSL certificate configured in the [configuration.yaml under http]({ssl_link}) while a local HTTP address `{base_url}` is configured under \"Home Assistant URL\" in the [network settings]({network_link}). Therefore, the Reolink device can not reach Home Assistant to push its motion/AI events. Please make sure the local HTTP address is not covered by the SSL certificate, by for instance using [NGINX add-on]({nginx_link}) instead of a globally enforced SSL certificate.",
