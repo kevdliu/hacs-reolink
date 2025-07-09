@@ -319,15 +319,6 @@
             }
         },
         "camera": {
-            "autotrack_snapshots_main": {
-                "name": "Autotrack snapshots clear"
-            },
-            "autotrack_snapshots_sub": {
-                "name": "Autotrack snapshots fluent"
-            },
-            "autotrack_sub": {
-                "name": "Autotrack fluent"
-            },
             "ext": {
                 "name": "Balanced"
             },
@@ -372,6 +363,18 @@
             },
             "sub_lens_1": {
                 "name": "Fluent lens 1"
+            },
+            "telephoto_main": {
+                "name": "Telephoto clear"
+            },
+            "telephoto_snapshots_main": {
+                "name": "Telephoto snapshots clear"
+            },
+            "telephoto_snapshots_sub": {
+                "name": "Telephoto snapshots fluent"
+            },
+            "telephoto_sub": {
+                "name": "Telephoto fluent"
             }
         },
         "light": {
@@ -440,6 +443,9 @@
             "crossline_sensitivity": {
                 "name": "AI crossline {zone_name} sensitivity"
             },
+            "cry_sensitivity": {
+                "name": "Baby cry sensitivity"
+            },
             "day_night_switch_threshold": {
                 "name": "Day night switch threshold"
             },
@@ -478,6 +484,9 @@
             },
             "intrusion_sensitivity": {
                 "name": "AI intrusion {zone_name} sensitivity"
+            },
+            "ir_brightness": {
+                "name": "Infrared light brightness"
             },
             "linger_delay": {
                 "name": "AI linger {zone_name} delay"
@@ -773,6 +782,9 @@
             "guard_return": {
                 "name": "Guard return"
             },
+            "hardwired_chime_enabled": {
+                "name": "Hardwired chime enabled"
+            },
             "hdr": {
                 "name": "HDR"
             },
@@ -793,6 +805,9 @@
             },
             "pir_reduce_alarm": {
                 "name": "PIR reduce false alarm"
+            },
+            "privacy_mask": {
+                "name": "Privacy mask"
             },
             "privacy_mode": {
                 "name": "Privacy mode"
