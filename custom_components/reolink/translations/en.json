@@ -503,6 +503,12 @@
             "pir_sensitivity": {
                 "name": "PIR sensitivity"
             },
+            "pre_record_battery_stop": {
+                "name": "Pre-recording stop battery level"
+            },
+            "pre_record_time": {
+                "name": "Pre-recording time"
+            },
             "taken_item_delay": {
                 "name": "AI item taken {zone_name} delay"
             },
@@ -668,6 +674,12 @@
             "play_quick_reply_message": {
                 "name": "Play quick reply message"
             },
+            "post_rec_time": {
+                "name": "Post-recording time"
+            },
+            "pre_record_fps": {
+                "name": "Pre-recording frame rate"
+            },
             "ptz_preset": {
                 "name": "PTZ preset"
             },
@@ -805,6 +817,9 @@
             },
             "pir_reduce_alarm": {
                 "name": "PIR reduce false alarm"
+            },
+            "pre_record": {
+                "name": "Pre-recording"
             },
             "privacy_mask": {
                 "name": "Privacy mask"
