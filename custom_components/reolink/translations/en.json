@@ -509,6 +509,9 @@
             "pre_record_time": {
                 "name": "Pre-recording time"
             },
+            "silent_time": {
+                "name": "Silent time"
+            },
             "taken_item_delay": {
                 "name": "AI item taken {zone_name} delay"
             },
@@ -517,6 +520,12 @@
             },
             "volume": {
                 "name": "Volume"
+            },
+            "volume_doorbell": {
+                "name": "Doorbell volume"
+            },
+            "volume_speak": {
+                "name": "Speak volume"
             },
             "zoom": {
                 "name": "Zoom"
