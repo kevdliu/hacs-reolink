@@ -626,6 +626,9 @@
             "main_bit_rate": {
                 "name": "Clear bit rate"
             },
+            "main_encoding": {
+                "name": "Clear encoding"
+            },
             "main_frame_rate": {
                 "name": "Clear frame rate"
             },
@@ -703,6 +706,9 @@
             },
             "sub_bit_rate": {
                 "name": "Fluent bit rate"
+            },
+            "sub_encoding": {
+                "name": "Fluent encoding"
             },
             "sub_frame_rate": {
                 "name": "Fluent frame rate"
@@ -953,7 +959,7 @@
                     "protocol": "Protocol"
                 },
                 "data_description": {
-                    "protocol": "Streaming protocol to use for the camera entities. RTSP supports 4K streams (h265 encoding) while RTMP and FLV do not. FLV is the least demanding on the camera."
+                    "protocol": "Streaming protocol to use for the camera entities. RTSP supports 4K streams (H.265 encoding) while RTMP and FLV do not. FLV is the least demanding on the camera."
                 }
             }
         }
