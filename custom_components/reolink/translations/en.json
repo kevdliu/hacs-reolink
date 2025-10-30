@@ -143,6 +143,13 @@
                     "on": "Detected"
                 }
             },
+            "io_input": {
+                "name": "IO input {index}",
+                "state": {
+                    "off": "Disconnected",
+                    "on": "Connected"
+                }
+            },
             "linger_dog_cat": {
                 "name": "Linger {zone_name} animal",
                 "state": {
@@ -173,6 +180,13 @@
             },
             "motion_lens_1": {
                 "name": "Motion lens 1",
+                "state": {
+                    "off": "Clear",
+                    "on": "Detected"
+                }
+            },
+            "non-motor_vehicle": {
+                "name": "Bicycle",
                 "state": {
                     "off": "Clear",
                     "on": "Detected"
@@ -398,6 +412,12 @@
             "ai_face_sensitivity": {
                 "name": "AI face sensitivity"
             },
+            "ai_non_motor_vehicle_delay": {
+                "name": "AI bicycle delay"
+            },
+            "ai_non_motor_vehicle_sensitivity": {
+                "name": "AI bicycle sensitivity"
+            },
             "ai_package_delay": {
                 "name": "AI package delay"
             },
@@ -451,6 +471,15 @@
             },
             "floodlight_brightness": {
                 "name": "Floodlight turn on brightness"
+            },
+            "floodlight_event_brightness": {
+                "name": "Floodlight event brightness"
+            },
+            "floodlight_event_flash_time": {
+                "name": "Floodlight event flash time"
+            },
+            "floodlight_event_on_time": {
+                "name": "Floodlight event on time"
             },
             "focus": {
                 "name": "Focus"
@@ -570,6 +599,14 @@
                     "alwaysonatnight": "Auto & always on at night",
                     "auto": "Auto",
                     "stayoff": "Stay off"
+                }
+            },
+            "floodlight_event_mode": {
+                "name": "Floodlight event mode",
+                "state": {
+                    "flash": "Flash",
+                    "off": "Off",
+                    "on": "On"
                 }
             },
             "floodlight_mode": {
@@ -747,6 +784,13 @@
             }
         },
         "sensor": {
+            "animal_type": {
+                "name": "Animal type",
+                "state": {
+                    "cat": "Cat",
+                    "dog": "Dog"
+                }
+            },
             "battery_state": {
                 "name": "Battery state",
                 "state": {
@@ -772,6 +816,13 @@
             "hdd_storage": {
                 "name": "HDD {hdd_index} storage"
             },
+            "person_type": {
+                "name": "Person type",
+                "state": {
+                    "man": "Man",
+                    "woman": "Woman"
+                }
+            },
             "ptz_pan_position": {
                 "name": "PTZ pan position"
             },
@@ -780,6 +831,15 @@
             },
             "sd_storage": {
                 "name": "SD {hdd_index} storage"
+            },
+            "vehicle_type": {
+                "name": "Vehicle type",
+                "state": {
+                    "motorcycle": "Motorcycle",
+                    "pickup_truck": "Pickup truck",
+                    "sedan": "Sedan",
+                    "suv": "SUV"
+                }
             },
             "wifi_signal": {
                 "name": "Wi-Fi signal"
@@ -854,6 +914,9 @@
             "record_audio": {
                 "name": "Record audio"
             },
+            "rule": {
+                "name": "Surveillance rule {name}"
+            },
             "siren_on_event": {
                 "name": "Siren on event"
             }
@@ -927,10 +990,6 @@
         "https_webhook": {
             "description": "Reolink products can not push motion events to an HTTPS address (SSL), please configure a (local) HTTP address under \"Home Assistant URL\" in the [network settings]({network_link}). The current (local) address is: `{base_url}`, a valid address could, for example, be `http://192.168.1.10:8123` where `192.168.1.10` is the IP of the Home Assistant device. Alternatively, if you have configured Home Assistant to use HTTPS, you may set up a HTTP reverse proxy in front of Home Assistant and input the proxy's address in the integration's options menu.",
             "title": "Reolink webhook URL uses HTTPS (SSL)"
-        },
-        "hub_switch_deprecated": {
-            "description": "The redundant 'Record', 'Email on event', 'FTP upload', 'Push notifications', and 'Buzzer on event' switches on the Reolink Home Hub are deprecated since the new firmware no longer supports these. Please use the equally named switches under each of the camera devices connected to the Home Hub instead. To remove this issue, please adjust automations accordingly and disable the switch entities mentioned.",
-            "title": "Reolink Home Hub switches deprecated"
         },
         "password_too_long": {
             "description": "The password for \"{name}\" is more than 31 characters long, this is no longer compatible with the Reolink API. Please change the password using the Reolink app/client to a password with is shorter than 32 characters. After changing the password, fill in the new password in the Reolink Re-authentication flow to continue using this integration. The latest version of the Reolink app/client also has a password limit of 31 characters.",
