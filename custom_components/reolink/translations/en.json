@@ -543,7 +543,8 @@
                     "autoadaptive": "Auto adaptive",
                     "off": "Off",
                     "onatnight": "On at night",
-                    "schedule": "Schedule"
+                    "schedule": "Schedule",
+                    "scheduleplus": "Schedule plus"
                 }
             },
             "hdr": {
