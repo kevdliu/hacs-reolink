@@ -75,10 +75,11 @@ WEBHOOK_REACHABILITY_TEST_TIMEOUT = 10
 class ReolinkOptionsFlowHandler(OptionsFlowWithReload):
     """Handle Reolink options."""
 
-    def __init__(self) -> None:
+    def __init__(self, config_entry) -> None:
         """Initialize ReolinkOptionsFlowHandler."""
-        self.protocol = self.config_options[CONF_PROTOCOL]
-        self.webhook_reverse_proxy = self.config_options.get(
+        self._config_entry = config_entry
+        self.protocol = self._config_entry.options[CONF_PROTOCOL]
+        self.webhook_reverse_proxy = self._config_entry.options.get(
             CONF_ONVIF_EVENTS_REVERSE_PROXY
         )
 
@@ -91,7 +92,7 @@ class ReolinkOptionsFlowHandler(OptionsFlowWithReload):
         if user_input is not None:
             reverse_proxy = user_input.get(CONF_ONVIF_EVENTS_REVERSE_PROXY)
             # Only perform the webhook test if a new reverse proxy is configured
-            if reverse_proxy and reverse_proxy != self.config_options.get(
+            if reverse_proxy and reverse_proxy != self._config_entry.options.get(
                 CONF_ONVIF_EVENTS_REVERSE_PROXY
             ):
                 try:
@@ -202,7 +203,7 @@ class ReolinkFlowHandler(ConfigFlow, domain=DOMAIN):
         config_entry: ReolinkConfigEntry,
     ) -> ReolinkOptionsFlowHandler:
         """Options callback for Reolink."""
-        return ReolinkOptionsFlowHandler()
+        return ReolinkOptionsFlowHandler(config_entry)
 
     async def async_step_reauth(
         self, entry_data: Mapping[str, Any]
